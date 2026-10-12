@@ -9,7 +9,7 @@ Start the container NAME (creating it from IMAGE if it doesn't exist)
 and open a bash shell in it.
 
   NAME   container name   (default: pi-box)
-  IMAGE  image to create from (default: pi-box)
+  IMAGE  image to create from (default: ghcr.io/skagget77/pi-box:latest)
 
   -k KEY copy the private key file KEY to ~/.ssh/ in the container and
          write an ssh config that uses it for all hosts
@@ -32,7 +32,7 @@ done
 shift $((OPTIND - 1))
 
 name=${1:-pi-box}
-image=${2:-pi-box}
+image=${2:-ghcr.io/skagget77/pi-box:latest}
 
 if [ -n "$key" ] && [ ! -f "$key" ]; then
     echo "error: key file not found: $key" >&2

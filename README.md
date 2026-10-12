@@ -15,10 +15,10 @@ A persistent Alpine Linux development container with git, Node.js, npm, Emacs an
 podman build -t pi-box .
 ```
 
-Or use the published image from GitHub Container Registry and pass it to `start.sh` as `IMAGE`:
+`start.sh` uses the published image from GitHub Container Registry by default (`ghcr.io/skagget77/pi-box:latest`). To use a local build instead, pass it as `IMAGE`:
 
 ```sh
-./start.sh -k ~/.ssh/pi-box pi-box ghcr.io/<owner>/pi-box:latest
+./start.sh -k ~/.ssh/pi-box pi-box pi-box
 ```
 
 Pi is pinned to a specific version in the `Dockerfile` due to a dependency issue with the `@aws-sdk/credential-provider-node@^3.972.86` package in 1.1.0. Remove the `@<version>` suffix to track the latest release.
@@ -32,7 +32,7 @@ Pi is pinned to a specific version in the `Dockerfile` due to a dependency issue
 | Argument | Default   | Description                                                        |
 |----------|-----------|--------------------------------------------------------------------|
 | `NAME`   | `pi-box`  | Container name                                                     |
-| `IMAGE`  | `pi-box`  | Image to create from                                               |
+| `IMAGE`  | `ghcr.io/skagget77/pi-box:latest` | Image to create from                         |
 | `-k KEY` |           | Private key file to copy into the container (see [SSH key](#ssh-key)) |
 | `-h`     |           | Show help                                                          |
 
@@ -60,7 +60,7 @@ Using a separate key means you can revoke it without touching your other keys.
 
 ## Publishing
 
-A GitHub Actions workflow (`.github/workflows/publish.yml`) builds the image and pushes it to `ghcr.io/<owner>/pi-box`. A push to `main` publishes `latest`, and a tag like `v1.0.0` also publishes `1.0.0`. The package is private until you make it public in its GitHub package settings.
+A GitHub Actions workflow (`.github/workflows/publish.yml`) builds the image and pushes it to `ghcr.io/skagget77/pi-box`. A push to `main` publishes `latest`, and a tag like `v1.0.0` also publishes `1.0.0`. The package is private until you make it public in its GitHub package settings.
 
 ## Notes
 
