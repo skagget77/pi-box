@@ -15,6 +15,12 @@ A persistent Alpine Linux development container with git, Node.js, npm, Emacs an
 podman build -t pi-box .
 ```
 
+Or use the published image from GitHub Container Registry and pass it to `start.sh` as `IMAGE`:
+
+```sh
+./start.sh -k ~/.ssh/pi-box pi-box ghcr.io/<owner>/pi-box:latest
+```
+
 Pi is pinned to a specific version in the `Dockerfile` due to a dependency issue with the `@aws-sdk/credential-provider-node@^3.972.86` package in 1.1.0. Remove the `@<version>` suffix to track the latest release.
 
 ## Usage
@@ -51,6 +57,10 @@ ssh-keygen -t ed25519 -f ~/.ssh/pi-box -C pi-box
 ```
 
 Using a separate key means you can revoke it without touching your other keys.
+
+## Publishing
+
+A GitHub Actions workflow (`.github/workflows/publish.yml`) builds the image and pushes it to `ghcr.io/<owner>/pi-box`. A push to `main` publishes `latest`, and a tag like `v1.0.0` also publishes `1.0.0`. The package is private until you make it public in its GitHub package settings.
 
 ## Notes
 
