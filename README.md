@@ -5,7 +5,7 @@ A persistent Alpine Linux development container with git, Node.js, npm, Emacs an
 ## Contents
 
 - Alpine 3.24
-- `git`, `nodejs`, `npm`, `emacs-nox`, `bash`, `openssh-client`
+- `git`, `nodejs`, `npm`, `emacs-nox`, `bash`, `openssh-client`, `less`, `ncurses`
 - Pi (`@earendil-works/pi-coding-agent`), installed per user under `~/.local` so it can update itself
 - Runs as the non-root user `pi` (home: `/home/pi`)
 
