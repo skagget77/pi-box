@@ -1,6 +1,6 @@
 FROM alpine:3.24
 
-RUN apk add --no-cache git nodejs npm emacs-nox bash openssh-client && \
+RUN apk add --no-cache git nodejs npm emacs-nox bash openssh-client less ncurses && \
     adduser -D -s /bin/bash pi
 
 USER pi
