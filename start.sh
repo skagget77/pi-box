@@ -40,7 +40,7 @@ if [ -n "$key" ] && [ ! -f "$key" ]; then
 fi
 
 if ! podman container exists "$name"; then
-    podman run -d --init --name "$name" "$image" sleep infinity >/dev/null
+    podman run -d --init --network host --hostname "$name" --name "$name" "$image" sleep infinity >/dev/null
     if [ -n "$key" ]; then
         keyname=${key##*/}
         podman exec "$name" mkdir -p -m 700 /home/pi/.ssh
