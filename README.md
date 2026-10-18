@@ -7,6 +7,7 @@ A persistent Alpine Linux development container with git, Node.js, npm, Emacs an
 - Alpine 3.24
 - `git`, `nodejs`, `npm`, `emacs-nox`, `bash`, `openssh-client`
 - Pi (`@earendil-works/pi-coding-agent`), installed per user under `~/.local` so it can update itself
+- ssh-agent helper (see [SSH key](#ssh-key))
 - Runs as the non-root user `pi` (home: `/home/pi`)
 
 ## Build
@@ -58,11 +59,20 @@ ssh-keygen -t ed25519 -f ~/.ssh/pi-box -C pi-box
 
 Using a separate key means you can revoke it without touching your other keys.
 
+### ssh-agent
+
+The image runs one ssh-agent for the lifetime of the container and loads the key into it automatically:
+
+- `~/.bashrc` sources `~/.pi-box/ssh-agent.sh` in every interactive shell.
+- The first shell starts the agent (socket in `/tmp/ssh-agent.sock`) and runs `ssh-add`, so it prompts for the passphrase once; later shells just export `SSH_AUTH_SOCK` and find the key already loaded.
+- The agent survives shell exits and container stop/start; it is recreated on the next interactive shell if it dies or has no identities. It lives in the container's filesystem/PID space, so it is lost when the container is removed (like the key).
+- This is a convenience layer on top of OpenSSH: because the key is in `~/.ssh/config`'s `IdentityFile`, plain `ssh` works even without the agent.
+
 ## Publishing
 
 A GitHub Actions workflow (`.github/workflows/publish.yml`) builds the image and pushes it to `ghcr.io/skagget77/pi-box`. A push to `main` publishes `latest`, and a tag like `v1.0.0` also publishes `1.0.0`. The package is private until you make it public in its GitHub package settings.
 
 ## Notes
 
-- Nothing is mounted. Pi's config, API keys and sessions live in the container's filesystem under `/home/pi/.pi/agent/` and persist across stop/start, but are lost when the container is removed. The same goes for the ssh key.
+- Nothing is mounted. Pi's config, API keys and sessions live in the container's filesystem under `/home/pi/.pi/agent/` and persist across stop/start, but are lost when the container is removed. The same goes for the ssh key and the ssh-agent's in-memory identities.
 - Docker works too: replace `podman` with `docker`. The script uses `podman container exists`, which has no direct Docker equivalent, so adjust that check if you switch.
