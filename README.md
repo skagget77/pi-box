@@ -21,7 +21,7 @@ podman build -t pi-box .
 ./start.sh -k ~/.ssh/pi-box pi-box pi-box
 ```
 
-Pi is pinned to a specific version in the `Dockerfile` due to a dependency issue with the `@aws-sdk/credential-provider-node@^3.972.86` package in 1.1.0. Remove the `@<version>` suffix to track the latest release.
+Pi is pinned in the `Dockerfile` for reproducibility (and requires Node >= 22.19). Remove the `@<version>` suffix to track the latest release.
 
 ## Usage
 
